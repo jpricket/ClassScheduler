@@ -25,6 +25,9 @@ public class CourseDescriptor {
 
     private CourseSchedule schedule;
 
+    public CourseDescriptor() {
+    }
+
     public CourseDescriptor(final Element element) {
         int index = 0;
         Elements cols = element.select("td");

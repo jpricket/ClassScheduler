@@ -8,6 +8,9 @@ public class CourseSchedule {
     private List<String> days = new ArrayList<String>();
     private List<String> times = new ArrayList<String>();
 
+    public CourseSchedule() {
+    }
+
     public CourseSchedule(String days, String time) {
         add(days, time);
     }
