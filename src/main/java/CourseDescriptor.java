@@ -72,6 +72,10 @@ public class CourseDescriptor {
         return course;
     }
 
+    public String getName() {
+        return subject + course;
+    }
+
     public String getSection() {
         return section;
     }

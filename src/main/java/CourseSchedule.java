@@ -11,7 +11,7 @@ public class CourseSchedule {
     private List<String> times = new ArrayList<String>();
 
     public static final int FirstClassHour = 8;
-    public enum Day { Mon, Tue, Wed, Thu, Fri }
+    public enum Day { Monday, Tuesday, Wednesday, Thursday, Friday }
     public class ClassTime {
         public final Day Day;
         public final int Hour;
@@ -66,22 +66,37 @@ public class CourseSchedule {
                 duration = (endHour - startHour)*60 + endMinute - startMinute;
             }
             if (days.get(i).contains("M")) {
-                classTimes.add(new ClassTime(Day.Mon, startHour, startMinute, duration));
+                classTimes.add(new ClassTime(Day.Monday, startHour, startMinute, duration));
             }
             if (days.get(i).contains("T")) {
-                classTimes.add(new ClassTime(Day.Tue, startHour, startMinute, duration));
+                classTimes.add(new ClassTime(Day.Tuesday, startHour, startMinute, duration));
             }
             if (days.get(i).contains("W")) {
-                classTimes.add(new ClassTime(Day.Wed, startHour, startMinute, duration));
+                classTimes.add(new ClassTime(Day.Wednesday, startHour, startMinute, duration));
             }
             if (days.get(i).contains("R")) {
-                classTimes.add(new ClassTime(Day.Thu, startHour, startMinute, duration));
+                classTimes.add(new ClassTime(Day.Thursday, startHour, startMinute, duration));
             }
             if (days.get(i).contains("F")) {
-                classTimes.add(new ClassTime(Day.Fri, startHour, startMinute, duration));
+                classTimes.add(new ClassTime(Day.Friday, startHour, startMinute, duration));
             }
         }
         return classTimes;
+    }
+
+    public List<String> getDayNames() {
+        List<String> days = new ArrayList<>();
+        for(final ClassTime time: getClassTimes()) {
+            days.add(time.Day.toString());
+        }
+        return days;
+    }
+
+    public ClassTime getStartTime() {
+        for(final ClassTime time: getClassTimes()) {
+            return time;
+        }
+        return null;
     }
 
     @Override

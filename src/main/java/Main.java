@@ -38,12 +38,28 @@ public class Main {
         System.out.println("Courses loaded.");
 
         SchedulePrinter printer = new SchedulePrinter();
-        final List<String> schedule = new ArrayList<String>();
-        Collections.addAll(schedule, "10558", "15530", "12505", "17786", "14097", "13220");
-        for(CourseDescriptor course: courses.stream().filter(c -> schedule.contains(c.getRefNumber())).collect(Collectors.toList())) {
+        List<CourseDescriptor> filteredCourses =
+                CourseFilter.create(courses)
+                    .in("10558", "15530", "12505", "17786", "14097", "13220")
+                    .go();
+        for(CourseDescriptor course: filteredCourses) {
             printer.addClass(course);
         }
         System.out.println(printer.toString());
+
+        filteredCourses =
+                CourseFilter.create(courses)
+                        .where("subject", "=", "bio")
+                        .where("schedule.days", "contains", "mon")
+                        .where("schedule.starttime", ">=", "1300")
+                        .where("schedule.starttime", "<", "1500")
+                        .go();
+
+        System.out.println("Found: " + filteredCourses.size());
+        for(CourseDescriptor course: filteredCourses) {
+            System.out.println(course.toString());
+        }
+
 
         //System.out.println("Writing courses to the cache...");
         //CacheWriter writer = new CacheWriter(cacheLocation);

@@ -44,7 +44,7 @@ public class SchedulePrinter {
 
     public void addClass(CourseDescriptor course) {
         for(CourseSchedule.ClassTime time: course.getSchedule().getClassTimes()) {
-            addBlock(time, course.getSubject() + course.getCourse());
+            addBlock(time, course.getName());
         }
     }
 
@@ -71,11 +71,11 @@ public class SchedulePrinter {
 
     private int getDayIndex(CourseSchedule.Day day) {
         switch(day) {
-            case Mon: return xOffset;
-            case Tue: return xOffset + dayWidth;
-            case Wed: return xOffset + dayWidth * 2;
-            case Thu: return xOffset + dayWidth * 3;
-            case Fri: return xOffset + dayWidth * 4;
+            case Monday: return xOffset;
+            case Tuesday: return xOffset + dayWidth;
+            case Wednesday: return xOffset + dayWidth * 2;
+            case Thursday: return xOffset + dayWidth * 3;
+            case Friday: return xOffset + dayWidth * 4;
             default: return 0;
         }
     }
