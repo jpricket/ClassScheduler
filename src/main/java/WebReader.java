@@ -1,3 +1,4 @@
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -7,9 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by jpricket on 6/12/2017.
- */
 public class WebReader {
     public static List<CourseDescriptor> getCourses(String term, String subjectCode) throws IOException {
         List<CourseDescriptor> courses = new ArrayList<CourseDescriptor>();
@@ -47,5 +45,25 @@ public class WebReader {
             subjects.add(new Subject(e));
         }
         return subjects;
+    }
+
+    public static List<String> getInstructorRatings() throws IOException {
+        String query = "http://www.ratemyprofessors.com/search.jsp?queryoption=HEADER&queryBy=teacherName&schoolName=university+of+north+carolina+wilmington&schoolID=&query=";
+        String query2 = "http://www.ratemyprofessors.com/search.jsp?query=&queryoption=HEADER&stateselect=&country=&dept=&queryBy=teacherName&facetSearch=&schoolName=university+of+north+carolina+wilmington&offset=50&max=50";
+        final List<Subject> subjects = new ArrayList<Subject>();
+        final Document doc = Jsoup.connect(query2)
+                //.requestBody("call_proc_in=swkfccl.p_sel_crse_search&term_in=" + term)
+                .post();
+        final Elements elements = doc.select("a[href^=/ShowRatings.jsp?tid=]");
+        final Element count = doc.select("div.result-count").first();
+        //TODO parse count and loop thru all instructors
+        for(final Element e: elements) {
+            String ref = e.attr("href");
+            ref = StringUtils.substringAfter(ref, "=");
+            String name = e.select("span.main").first().text();
+            String sub = e.select("span.sub").first().text();
+            System.out.println(ref + " " + name + " " + sub);
+        }
+        return null;
     }
 }

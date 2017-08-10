@@ -99,11 +99,13 @@ public class CourseSchedule {
         return null;
     }
 
-    @Override
-    public String toString() {
+    public String toDisplayString() {
         String schedule = "";
         for(int i = 0; i < days.size(); i++) {
-            schedule += "[" + days.get(i) + " @ " + times.get(i) + "]";
+            if (i > 0) {
+                schedule += " - ";
+            }
+            schedule += days.get(i) + "@" + times.get(i);
         }
         return schedule;
     }

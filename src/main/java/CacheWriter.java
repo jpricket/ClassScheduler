@@ -4,16 +4,16 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
-/**
- * Created by jpricket on 6/12/2017.
- */
 public class CacheWriter {
     private final String cacheFolder;
 
-    public CacheWriter(final String cacheFolder) {
+    public CacheWriter(final String cacheFolder) throws IOException {
         this.cacheFolder = cacheFolder;
+        Files.createDirectories(Paths.get(cacheFolder));
     }
 
     public void write(final List<CourseDescriptor> courses) throws IOException {

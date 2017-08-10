@@ -145,7 +145,7 @@ public class CourseDescriptor {
             "campus=" + campus + "\n" +
             "creditHours=" + creditHours + "\n" +
             "title=" + title + "\n" +
-            "schedule=" + schedule.toString() + "\n" +
+            "schedule=" + schedule.toDisplayString() + "\n" +
             "seatsRemaining=" + seatsRemaining + "\n" +
             "waitListCapacity=" + waitListCapacity + "\n" +
             "waitListActual=" + waitListActual + "\n" +

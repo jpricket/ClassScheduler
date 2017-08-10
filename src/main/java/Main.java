@@ -12,11 +12,19 @@ import java.util.stream.Stream;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+//        if (args == null || args.length == 0) {
+//            WebReader.getInstructorRatings();
+//            return;
+//        }
+
+
         System.out.println("Reading courses from the cache...");
         final String cacheLocation = "c:\\users\\jpricket\\desktop\\classCache";
         CacheReader reader = new CacheReader(cacheLocation);
         List<CourseDescriptor> courses = reader.read();
+        boolean writeCache = false;
         if (courses.size() == 0) {
+            writeCache = true;
             System.out.println("Cache is empty. Reading courses from Web...");
             // Load classes from web
             int lastCount = 0;
@@ -37,22 +45,30 @@ public class Main {
         }
         System.out.println("Courses loaded.");
 
-        SchedulePrinter printer = new SchedulePrinter();
+        HtmlSchedulePrinter printer = new HtmlSchedulePrinter();
         List<CourseDescriptor> filteredCourses =
                 CourseFilter.create(courses)
                     .in("10558", "15530", "12505", "17786", "14097", "13220")
                     .go();
         for(CourseDescriptor course: filteredCourses) {
-            printer.addClass(course);
+            printer.addClass(course, true);
         }
-        System.out.println(printer.toString());
+        // Add optional classes
+        printer.addClasses(CourseFilter.create(courses)
+                .where("subject", "=", "csc")
+                .where("course", "=", "131")
+                .go()
+        );
+        printer.printToFile("c:\\users\\jpricket\\desktop\\schedule.html");
+        System.out.println("Schedule saved to \"c:\\\\users\\\\jpricket\\\\desktop\\\\schedule.html\"");
 
         filteredCourses =
                 CourseFilter.create(courses)
-                        .where("subject", "=", "bio")
+                        .where("subject", "=", "csc")
+                        .where("course", "=", "131")
                         .where("schedule.days", "contains", "mon")
-                        .where("schedule.starttime", ">=", "1300")
-                        .where("schedule.starttime", "<", "1500")
+                        //.where("seatsremaining", ">=", "1")
+                        //.where("schedule.starttime", "<", "1500")
                         .go();
 
         System.out.println("Found: " + filteredCourses.size());
@@ -61,9 +77,11 @@ public class Main {
         }
 
 
-        //System.out.println("Writing courses to the cache...");
-        //CacheWriter writer = new CacheWriter(cacheLocation);
-        //writer.clearCache();
-        //writer.write(courses);
+        if (writeCache) {
+            System.out.println("Writing courses to the cache...");
+            CacheWriter writer = new CacheWriter(cacheLocation);
+            writer.clearCache();
+            writer.write(courses);
+        }
     }
 }
